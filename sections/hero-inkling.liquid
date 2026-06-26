@@ -1,0 +1,110 @@
+{{ 'hero.css' | asset_url | stylesheet_tag }}
+
+<section class="ink-hero">
+  <div class="ink-hero__inner">
+    <div class="ink-hero__content">
+      {% if section.settings.kicker != blank %}
+        <p class="ink-hero__kicker">{{ section.settings.kicker }}</p>
+      {% endif %}
+
+      <h1 class="ink-hero__title">
+        {{ section.settings.heading }}
+      </h1>
+
+      {% if section.settings.text != blank %}
+        <p class="ink-hero__text">{{ section.settings.text }}</p>
+      {% endif %}
+
+      <div class="ink-hero__actions">
+        {% if section.settings.primary_label != blank %}
+          <a class="btn btn--pink" href="{{ section.settings.primary_link }}">
+            {{ section.settings.primary_label }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.secondary_label != blank %}
+          <a class="btn btn--outline" href="{{ section.settings.secondary_link }}">
+            {{ section.settings.secondary_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ink-hero__media">
+      {% if section.settings.hero_image != blank %}
+        {{ section.settings.hero_image
+          | image_url: width: 1200
+          | image_tag:
+            loading: 'eager',
+            class: 'ink-hero__image',
+            alt: section.settings.hero_image.alt
+        }}
+      {% endif %}
+
+      <div class="ink-hero__badge">
+        <strong>OVER<br>500+</strong>
+        <span>DESIGNS</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ink-hero__wave" aria-hidden="true"></div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Artist-made temporary tattoos"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Temporary tats by real artists."
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Express yourself with art that lasts 2–5 days and leaves no trace."
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary button label",
+      "default": "Shop best sellers"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary button label",
+      "default": "Browse artists"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Secondary button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

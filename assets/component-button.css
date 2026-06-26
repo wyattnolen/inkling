@@ -1,0 +1,78 @@
+.button,
+.shopify-payment-button__button {
+    --button-bg: var(--color-ink);
+    --button-color: var(--color-white);
+    --button-border: var(--color-ink);
+
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: 0.8rem 1.35rem;
+    border: 2px solid var(--button-border);
+    border-radius: var(--radius-sm);
+    color: var(--button-color);
+    background: var(--button-bg);
+    font-size: var(--text-sm);
+    font-weight: 900;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: none;
+    transition:
+        transform var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out),
+        background-color var(--duration-fast) var(--ease-out),
+        color var(--duration-fast) var(--ease-out);
+}
+
+.button:hover,
+.shopify-payment-button__button:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.button--primary {
+    --button-bg: var(--color-pink);
+    --button-color: var(--color-ink);
+    --button-border: var(--color-pink);
+}
+
+.button--primary:hover {
+    --button-bg: var(--color-pink-strong);
+    --button-border: var(--color-pink-strong);
+}
+
+.button--secondary {
+    --button-bg: var(--color-white);
+    --button-color: var(--color-ink);
+    --button-border: var(--color-ink);
+}
+
+.button--secondary:hover {
+    --button-bg: var(--color-yellow);
+}
+
+.button--blue {
+    --button-bg: var(--color-blue);
+    --button-color: var(--color-white);
+    --button-border: var(--color-blue);
+}
+
+.button--yellow {
+    --button-bg: var(--color-yellow);
+    --button-color: var(--color-ink);
+    --button-border: var(--color-yellow);
+}
+
+.button--small {
+    min-height: 2.35rem;
+    padding: 0.55rem 1rem;
+    font-size: var(--text-xs);
+}
+
+.button--full {
+    width: 100%;
+}

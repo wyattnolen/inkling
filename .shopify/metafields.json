@@ -10,23 +10,63 @@
   "page": [],
   "product": [
     {
-      "key": "snowboard_length",
-      "namespace": "test_data",
-      "name": "Snowboard length",
-      "description": "The length of the snowboard",
+      "key": "application_time",
+      "namespace": "custom",
+      "name": "Application time",
+      "description": "The minutes required for the professional to apply the tattoo ",
       "type": {
-        "name": "dimension",
-        "category": "MEASUREMENT"
+        "name": "number_integer",
+        "category": "NUMBER"
       }
     },
     {
-      "key": "binding_mount",
-      "namespace": "test_data",
-      "name": "Snowboard binding mount",
-      "description": "The type of binding mount used on the snowboard",
+      "key": "expected_duration",
+      "namespace": "custom",
+      "name": "Expected Duration",
+      "description": "The number of days the tattoo is expected to last",
+      "type": {
+        "name": "number_integer",
+        "category": "NUMBER"
+      }
+    },
+    {
+      "key": "recommended_placement",
+      "namespace": "custom",
+      "name": "Recommended Placement",
+      "description": "",
       "type": {
         "name": "single_line_text_field",
         "category": "TEXT"
+      }
+    },
+    {
+      "key": "care-instructions",
+      "namespace": "shopify",
+      "name": "Care instructions",
+      "description": "Provides guidance for product upkeep, such as hand wash or dry clean only",
+      "type": {
+        "name": "list.metaobject_reference",
+        "category": "REFERENCE"
+      }
+    },
+    {
+      "key": "appointment_required",
+      "namespace": "custom",
+      "name": "Appointment Required",
+      "description": "",
+      "type": {
+        "name": "boolean",
+        "category": "TRUE_FALSE"
+      }
+    },
+    {
+      "key": "artist",
+      "namespace": "custom",
+      "name": "Artist",
+      "description": "",
+      "type": {
+        "name": "metaobject_reference",
+        "category": "REFERENCE"
       }
     }
   ],
