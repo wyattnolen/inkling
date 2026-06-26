@@ -1,17 +1,9 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */{
+{
   "sections": {
-    "hero_jVaWmY": {
+    "hero": {
       "type": "hero",
       "blocks": {
-        "text_YLPk4p": {
+        "heading": {
           "type": "text",
           "name": "t:names.heading",
           "settings": {
@@ -37,7 +29,7 @@
           },
           "blocks": {}
         },
-        "button_H9gpTf": {
+        "button": {
           "type": "button",
           "name": "t:names.button",
           "settings": {
@@ -56,10 +48,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "text_YLPk4p",
-        "button_H9gpTf"
-      ],
+      "block_order": ["heading", "button"],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
@@ -91,7 +80,7 @@
         "padding-block-end": 72
       }
     },
-    "product_list_fa6P9H": {
+    "featured_collection": {
       "type": "product-list",
       "blocks": {
         "static-header": {
@@ -126,7 +115,7 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "product_list_text_YFtzcL": {
+            "collection_title": {
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
@@ -150,7 +139,7 @@
               },
               "blocks": {}
             },
-            "product_list_button_MWeP9V": {
+            "view_all_button": {
               "type": "_product-list-button",
               "name": "t:names.product_list_button",
               "settings": {
@@ -165,10 +154,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
-          ]
+          "block_order": ["collection_title", "view_all_button"]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -186,7 +172,7 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "product_card_gallery_677WP3": {
+            "product_card_gallery": {
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
@@ -202,7 +188,7 @@
               },
               "blocks": {}
             },
-            "product_title_YXxMTj": {
+            "product_title": {
               "type": "product-title",
               "name": "t:names.product_title",
               "settings": {
@@ -226,7 +212,7 @@
               },
               "blocks": {}
             },
-            "price_JQzVV4": {
+            "price": {
               "type": "price",
               "name": "t:names.product_price",
               "settings": {
@@ -249,11 +235,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "product_card_gallery_677WP3",
-            "product_title_YXxMTj",
-            "price_JQzVV4"
-          ]
+          "block_order": ["product_card_gallery", "product_title", "price"]
         }
       },
       "name": "Featured collection",
@@ -278,8 +260,5 @@
       }
     }
   },
-  "order": [
-    "hero_jVaWmY",
-    "product_list_fa6P9H"
-  ]
+  "order": ["hero", "featured_collection"]
 }
