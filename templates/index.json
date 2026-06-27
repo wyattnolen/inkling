@@ -23,13 +23,89 @@
         "hero_image": "shopify://shop_images/hero-v2-desktop.png",
         "hero_image_mobile": "shopify://shop_images/hero-v2-mobile.png",
         "badge_text": "Over\n500+\ndesigns",
-        "background_color": "#fffaf3",
+        "background_color": "#fdf6e9",
         "accent_color": "#2468f2",
         "pink_color": "#ff6ab0",
         "yellow_color": "#ffd82e"
       }
     },
-    "featured_collection": {
+    "vibe_card_4FcBb3": {
+      "type": "vibe-card",
+      "blocks": {
+        "vibe_tPH6UG": {
+          "type": "vibe",
+          "settings": {
+            "title": "Florals",
+            "collection": "",
+            "link": "",
+            "image": "shopify://shop_images/vibe-flower.png",
+            "fallback_icon": "🌸",
+            "background_color": "#F6A3C6",
+            "text_color": "#111111"
+          }
+        },
+        "vibe_KHMrjV": {
+          "type": "vibe",
+          "settings": {
+            "title": "Tiny Icons",
+            "collection": "",
+            "link": "",
+            "image": "shopify://shop_images/vibe-heart.png",
+            "fallback_icon": "❤️",
+            "background_color": "#9bdbc7",
+            "text_color": "#111111"
+          }
+        },
+        "vibe_irqQeG": {
+          "type": "vibe",
+          "settings": {
+            "title": "Mystical",
+            "collection": "",
+            "link": "",
+            "image": "shopify://shop_images/vibe-crystal.png",
+            "fallback_icon": "🔮",
+            "background_color": "#d8cdeb",
+            "text_color": "#111111"
+          }
+        },
+        "vibe_44efxT": {
+          "type": "vibe",
+          "settings": {
+            "title": "Kids",
+            "collection": "",
+            "link": "",
+            "image": "shopify://shop_images/vibe-dog.png",
+            "fallback_icon": "🐶",
+            "background_color": "#ffd84d",
+            "text_color": "#111111"
+          }
+        },
+        "vibe_TjKK8m": {
+          "type": "vibe",
+          "settings": {
+            "title": "Statement Pieces",
+            "collection": "",
+            "link": "",
+            "image": "shopify://shop_images/vibe-tiger.png",
+            "fallback_icon": "🐯",
+            "background_color": "#1C51CC",
+            "text_color": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "vibe_tPH6UG",
+        "vibe_KHMrjV",
+        "vibe_irqQeG",
+        "vibe_44efxT",
+        "vibe_TjKK8m"
+      ],
+      "name": "Inkling vibe cards",
+      "settings": {
+        "heading": "Shop by vibe"
+      }
+    },
+    "product_list_CPTpNa": {
       "type": "product-list",
       "blocks": {
         "static-header": {
@@ -66,7 +142,7 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "collection_title": {
+            "product_list_text_g9mgtJ": {
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
@@ -92,7 +168,7 @@
               },
               "blocks": {}
             },
-            "view_all_button": {
+            "product_list_button_47qtNb": {
               "type": "_product-list-button",
               "name": "t:names.product_list_button",
               "settings": {
@@ -112,8 +188,8 @@
             }
           },
           "block_order": [
-            "collection_title",
-            "view_all_button"
+            "product_list_text_g9mgtJ",
+            "product_list_button_47qtNb"
           ]
         },
         "static-product-card": {
@@ -134,7 +210,7 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "product_card_gallery": {
+            "product_card_gallery_FfTkVT": {
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
@@ -151,7 +227,7 @@
               },
               "blocks": {}
             },
-            "product_title": {
+            "product_title_MgcT4W": {
               "type": "product-title",
               "name": "t:names.product_title",
               "settings": {
@@ -176,7 +252,7 @@
               },
               "blocks": {}
             },
-            "price": {
+            "price_Vbitct": {
               "type": "price",
               "name": "t:names.product_price",
               "settings": {
@@ -201,9 +277,9 @@
             }
           },
           "block_order": [
-            "product_card_gallery",
-            "product_title",
-            "price"
+            "product_card_gallery_FfTkVT",
+            "product_title_MgcT4W",
+            "price_Vbitct"
           ]
         }
       },
@@ -212,8 +288,8 @@
         "collection": "all",
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "max_products": 8,
-        "columns": 4,
+        "max_products": 6,
+        "columns": 6,
         "mobile_columns": "2",
         "mobile_card_size": "60cqw",
         "columns_gap": 8,
@@ -231,6 +307,7 @@
   },
   "order": [
     "inkling_hero_RV8NB4",
-    "featured_collection"
+    "vibe_card_4FcBb3",
+    "product_list_CPTpNa"
   ]
 }

@@ -1,0 +1,444 @@
+<section
+  id="InklingVibes-{{ section.id }}"
+  class="inkling-vibes"
+>
+  <div class="inkling-vibes__inner">
+    {% if section.settings.heading != blank %}
+      <h2 class="inkling-vibes__heading">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    <div class="inkling-vibes__grid">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          {% assign vibe_collection = block.settings.collection %}
+
+          <a
+            class="inkling-vibe-card"
+            href="{% if vibe_collection != blank %}{{ vibe_collection.url }}{% else %}{{ block.settings.link }}{% endif %}"
+            style="
+              --vibe-bg: {{ block.settings.background_color }};
+              --vibe-color: {{ block.settings.text_color }};
+            "
+            {{ block.shopify_attributes }}
+          >
+            <span class="inkling-vibe-card__media">
+              {% if block.settings.image != blank %}
+                {{
+                  block.settings.image
+                  | image_url: width: 420
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'inkling-vibe-card__image',
+                    alt: block.settings.title
+                }}
+              {% else %}
+                <span class="inkling-vibe-card__emoji">
+                  {{ block.settings.fallback_icon }}
+                </span>
+              {% endif %}
+            </span>
+
+            <span class="inkling-vibe-card__content">
+              <span class="inkling-vibe-card__title">
+                {% if block.settings.title != blank %}
+                  {{ block.settings.title }}
+                {% elsif vibe_collection != blank %}
+                  {{ vibe_collection.title }}
+                {% else %}
+                  Shop vibe
+                {% endif %}
+              </span>
+
+              <span class="inkling-vibe-card__arrow" aria-hidden="true">
+                →
+              </span>
+            </span>
+          </a>
+        {% endfor %}
+      {% else %}
+        {% assign fallback_vibes = 'Florals|/collections/florals|🌸|#f6a3c7,Tiny Icons|/collections/tiny-icons|❤️|#9bdbc7,Mystical|/collections/mystical|🔮|#d8cdeb,Kids|/collections/kids|🐶|#ffd84d,Statement Pieces|/collections/statement-pieces|🐯|#1764f5' | split: ',' %}
+
+        {% for vibe in fallback_vibes %}
+          {% assign vibe_parts = vibe | split: '|' %}
+          {% assign vibe_title = vibe_parts[0] %}
+          {% assign vibe_url = vibe_parts[1] %}
+          {% assign vibe_icon = vibe_parts[2] %}
+          {% assign vibe_bg = vibe_parts[3] %}
+
+          <a
+            class="inkling-vibe-card{% if vibe_title == 'Statement Pieces' %} inkling-vibe-card--blue{% endif %}"
+            href="{{ vibe_url }}"
+            style="
+              --vibe-bg: {{ vibe_bg }};
+              --vibe-color: {% if vibe_title == 'Statement Pieces' %}#ffffff{% else %}#111111{% endif %};
+            "
+          >
+            <span class="inkling-vibe-card__media">
+              <span class="inkling-vibe-card__emoji">
+                {{ vibe_icon }}
+              </span>
+            </span>
+
+            <span class="inkling-vibe-card__content">
+              <span class="inkling-vibe-card__title">
+                {{ vibe_title }}
+              </span>
+
+              <span class="inkling-vibe-card__arrow" aria-hidden="true">
+                →
+              </span>
+            </span>
+          </a>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .inkling-vibes {
+    background: #fffdf8;
+    padding: 2.2rem 0 2.6rem;
+  }
+
+  .inkling-vibes__inner {
+    width: min(100% - 3rem, 1420px);
+    margin-inline: auto;
+  }
+
+  .inkling-vibes__heading {
+    margin: 0 0 1.35rem;
+    font-family: var(--font-heading-family, var(--font-body-family, inherit));
+    font-size: clamp(1.25rem, 1.6vw, 1.55rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+    color: #111111;
+  }
+
+  .inkling-vibes__grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(1rem, 1.6vw, 1.45rem);
+  }
+
+  .inkling-vibe-card {
+    --vibe-bg: #f6a3c7;
+    --vibe-color: #111111;
+
+    position: relative;
+    display: flex;
+    min-height: 142px;
+    padding: 1rem 1.1rem 1.15rem;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 22px;
+    background: var(--vibe-bg);
+    color: var(--vibe-color);
+    text-decoration: none;
+    box-shadow: 0 12px 28px rgba(17, 17, 17, 0.08);
+    transform: translateZ(0);
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .inkling-vibe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 34px rgba(17, 17, 17, 0.13);
+  }
+
+  .inkling-vibe-card:focus-visible {
+    outline: 3px solid #111111;
+    outline-offset: 5px;
+  }
+  
+  .inkling-vibe-card__media {
+    position: absolute;
+    inset: 0 0 2.15rem;
+    z-index: 0;
+    display: grid;
+    place-items: center;
+    padding: 0.6rem 1rem 0;
+    pointer-events: none;
+  }
+
+  .inkling-vibe-card__image {
+    display: block;
+    width: min(58%, 118px);
+    max-height: 82px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .inkling-vibe-card__emoji {
+    display: block;
+    font-size: clamp(3rem, 4vw, 4.4rem);
+    line-height: 1;
+    transform: translateY(-0.15rem);
+  }
+
+  .inkling-vibe-card__content {
+    position: relative;
+    z-index: 1;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 1.45rem;
+  }
+
+  .inkling-vibe-card__title {
+    max-width: 11ch;
+    font-family: var(--font-heading-family, var(--font-body-family, inherit));
+    font-size: clamp(0.92rem, 1vw, 1.08rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .inkling-vibe-card__arrow {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    font-size: 1.45rem;
+    font-weight: 900;
+    line-height: 1;
+    transform: translateY(-1px);
+    transition: transform 180ms ease;
+  }
+
+  .inkling-vibe-card:hover .inkling-vibe-card__arrow {
+    transform: translate(5px, -1px);
+  }
+
+  /*
+    Special handling for the blue card.
+    This keeps the text readable and closer to the mockup.
+  */
+  .inkling-vibe-card[style*="#1764f5"],
+  .inkling-vibe-card[style*="#1764F5"] {
+    color: #ffffff;
+  }
+
+  .inkling-vibe-card[style*="#1764f5"]::after,
+  .inkling-vibe-card[style*="#1764F5"]::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    left: 50%;
+    width: 34%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.08);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @media screen and (max-width: 1199px) {
+    .inkling-vibes__inner {
+      width: min(100% - 2rem, 1120px);
+    }
+
+    .inkling-vibe-card {
+      min-height: 132px;
+    }
+
+    .inkling-vibe-card__image {
+      width: min(60%, 104px);
+      max-height: 76px;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .inkling-vibes__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .inkling-vibe-card {
+      min-height: 128px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .inkling-vibes {
+      padding: 1.5rem 0 1.9rem;
+    }
+
+    .inkling-vibes__inner {
+      width: min(100% - 1.25rem, 1120px);
+    }
+
+    .inkling-vibes__heading {
+      margin-bottom: 1rem;
+      font-size: 1.18rem;
+    }
+
+    .inkling-vibes__grid {
+      display: flex;
+      gap: 0.85rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 0.15rem 0.15rem 0.85rem;
+      margin-inline: -0.15rem;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .inkling-vibes__grid::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .inkling-vibes__grid::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: rgba(17, 17, 17, 0.18);
+    }
+
+    .inkling-vibe-card {
+      flex: 0 0 72%;
+      max-width: 270px;
+      min-height: 128px;
+      border-radius: 20px;
+      scroll-snap-align: start;
+    }
+
+    .inkling-vibe-card__image {
+      width: min(58%, 108px);
+      max-height: 78px;
+    }
+
+    .inkling-vibe-card__emoji {
+      font-size: 3.65rem;
+    }
+
+    .inkling-vibe-card__title {
+      font-size: 0.98rem;
+    }
+  }
+
+  @media screen and (max-width: 449px) {
+    .inkling-vibe-card {
+      flex-basis: 78%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Inkling vibe cards",
+  "tag": "section",
+  "class": "section-inkling-vibes",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by vibe"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "vibe",
+      "name": "Vibe card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Florals"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Fallback link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Illustration"
+        },
+        {
+          "type": "text",
+          "id": "fallback_icon",
+          "label": "Fallback icon",
+          "default": "🌸"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#f6a3c7"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#111111"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inkling vibe cards",
+      "blocks": [
+        {
+          "type": "vibe",
+          "settings": {
+            "title": "Florals",
+            "fallback_icon": "🌸",
+            "background_color": "#f6a3c7",
+            "text_color": "#111111"
+          }
+        },
+        {
+          "type": "vibe",
+          "settings": {
+            "title": "Tiny Icons",
+            "fallback_icon": "❤️",
+            "background_color": "#9bdbc7",
+            "text_color": "#111111"
+          }
+        },
+        {
+          "type": "vibe",
+          "settings": {
+            "title": "Mystical",
+            "fallback_icon": "🔮",
+            "background_color": "#d8cdeb",
+            "text_color": "#111111"
+          }
+        },
+        {
+          "type": "vibe",
+          "settings": {
+            "title": "Kids",
+            "fallback_icon": "🐶",
+            "background_color": "#ffd84d",
+            "text_color": "#111111"
+          }
+        },
+        {
+          "type": "vibe",
+          "settings": {
+            "title": "Statement Pieces",
+            "fallback_icon": "🐯",
+            "background_color": "#1764f5",
+            "text_color": "#ffffff"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
