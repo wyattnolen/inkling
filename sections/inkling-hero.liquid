@@ -5,8 +5,18 @@
     --hero-bg: {{ section.settings.background_color }};
     --hero-accent: {{ section.settings.accent_color }};
     --hero-pink: {{ section.settings.pink_color }};
+
+    {% if section.settings.hero_image != blank %}
+      --hero-image-desktop: url('{{ section.settings.hero_image | image_url: width: 2400 }}');
+    {% endif %}
+
+    {% if section.settings.hero_image_mobile != blank %}
+      --hero-image-mobile: url('{{ section.settings.hero_image_mobile | image_url: width: 1200 }}');
+    {% endif %}
   "
 >
+  <div class="inkling-hero__art" aria-hidden="true"></div>
+
   <div class="inkling-hero__inner">
     <div class="inkling-hero__content">
       {% if section.settings.heading != blank %}
@@ -35,31 +45,6 @@
         {% endif %}
       </div>
     </div>
-
-    <div class="inkling-hero__media" aria-hidden="true">
-      {% if section.settings.hero_image != blank %}
-        <picture>
-          {% if section.settings.hero_image_mobile != blank %}
-            <source
-              media="(max-width: 749px)"
-              srcset="{{ section.settings.hero_image_mobile | image_url: width: 1200 }}"
-            >
-          {% endif %}
-
-          {{
-            section.settings.hero_image
-            | image_url: width: 2200
-            | image_tag:
-              class: 'inkling-hero__image',
-              widths: '900, 1200, 1600, 1800, 2200',
-              sizes: '(max-width: 749px) 100vw, 50vw',
-              loading: 'eager',
-              fetchpriority: 'high',
-              alt: section.settings.hero_image.alt
-          }}
-        </picture>
-      {% endif %}
-    </div>
   </div>
 </section>
 
@@ -68,49 +53,58 @@
 .inkling-hero {
   position: relative;
   overflow: hidden;
-  background: var(--hero-bg, #fbf7f1);
+  background: var(--hero-bg, #fdf6e9);
+  min-height: 560px;
+  isolation: isolate;
+}
+
+.inkling-hero__art {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-image: var(--hero-image-desktop);
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: right center;
+  pointer-events: none;
 }
 
 .inkling-hero__inner {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  align-items: stretch;
-  min-height: 560px;
+  position: relative;
+  z-index: 2;
+  min-height: inherit;
   max-width: 1440px;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding: 64px clamp(40px, 6vw, 88px);
 }
 
 .inkling-hero__content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 520px;
-  padding: 64px 40px 64px 64px;
-  position: relative;
-  z-index: 2;
+  width: min(100%, 560px);
 }
 
 .inkling-hero__heading {
   margin: 0;
   color: #050505;
-  font-size: clamp(4rem, 5.7vw, 5.8rem);
+  font-size: clamp(3.8rem, 4.6vw, 5.45rem);
   line-height: 0.9;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.065em;
   font-weight: 900;
   text-wrap: balance;
 }
 
 .inkling-hero__heading strong,
 .inkling-hero__heading em {
-  color: var(--hero-accent, #2f67f6);
+  color: var(--hero-accent, #2468f2);
   font-style: normal;
 }
 
 .inkling-hero__text {
-  max-width: 360px;
+  max-width: 380px;
   margin-top: 26px;
   color: #222;
-  font-size: 1.1rem;
+  font-size: 1.12rem;
   line-height: 1.45;
   font-weight: 500;
 }
@@ -131,9 +125,10 @@
   align-items: center;
   justify-content: center;
   min-height: 52px;
-  padding: 0 26px;
+  padding: 0 28px;
   border: 2px solid #1a1a1a;
   border-radius: 12px;
+  color: #111;
   font-size: 0.95rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -150,103 +145,150 @@
 }
 
 .inkling-hero__btn--primary {
-  background: var(--hero-pink, #f56ab2);
-  border-color: var(--hero-pink, #f56ab2);
-  color: #111;
+  background: var(--hero-pink, #ff6ab0);
+  border-color: var(--hero-pink, #ff6ab0);
 }
 
 .inkling-hero__btn--secondary {
   background: transparent;
-  color: #111;
 }
 
-.inkling-hero__media {
-  position: relative;
-  min-width: 0;
-  overflow: hidden;
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-end;
-}
-
-.inkling-hero__media picture {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.inkling-hero__image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-/* Slightly larger desktop layouts */
+/* Large desktop */
 @media screen and (min-width: 1200px) {
+  .inkling-hero {
+    min-height: 590px;
+  }
+
   .inkling-hero__inner {
-    min-height: 610px;
+    padding-top: 72px;
+    padding-bottom: 72px;
   }
 
   .inkling-hero__content {
-    padding-left: 72px;
-    padding-right: 48px;
+    width: min(100%, 570px);
   }
 
   .inkling-hero__heading {
-    font-size: clamp(4.5rem, 5.8vw, 6.2rem);
+    font-size: clamp(4rem, 4.8vw, 5.7rem);
   }
 }
 
-/* Tablet */
-@media screen and (max-width: 989px) {
+/* Very wide screens */
+@media screen and (min-width: 1500px) {
+  .inkling-hero {
+    min-height: 620px;
+  }
+
+  .inkling-hero__art {
+    background-size: auto 100%;
+    background-position: right center;
+  }
+
   .inkling-hero__inner {
-    grid-template-columns: 1fr 1fr;
-    min-height: 500px;
+    max-width: 1520px;
+  }
+}
+
+/* Medium desktop / small laptop */
+@media screen and (max-width: 1199px) and (min-width: 990px) {
+  .inkling-hero {
+    min-height: 540px;
+  }
+
+  .inkling-hero__inner {
+    padding: 56px 40px;
   }
 
   .inkling-hero__content {
-    padding: 48px 24px 48px 32px;
-    max-width: 430px;
+    width: min(100%, 470px);
   }
 
   .inkling-hero__heading {
-    font-size: clamp(3.4rem, 7vw, 4.8rem);
+    font-size: clamp(3.25rem, 5vw, 4.35rem);
   }
 
   .inkling-hero__text {
+    max-width: 330px;
     font-size: 1rem;
-    max-width: 320px;
   }
 
-  .inkling-hero__btn {
-    min-height: 50px;
-    padding: 0 22px;
-    font-size: 0.88rem;
+  .inkling-hero__art {
+    background-size: auto 100%;
+    background-position: right center;
+  }
+}
+
+/* Tablet and mobile: stack content first, artwork second */
+@media screen and (max-width: 989px) {
+  .inkling-hero {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .inkling-hero__inner {
+    order: 1;
+    display: block;
+    width: 100%;
+    min-height: auto;
+    padding: 40px 24px 24px;
+  }
+
+  .inkling-hero__content {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .inkling-hero__heading {
+    font-size: clamp(3.7rem, 10vw, 6rem);
+    line-height: 0.9;
+  }
+
+  .inkling-hero__text {
+    max-width: 420px;
+    margin-top: 20px;
+    font-size: 1.05rem;
+  }
+
+  .inkling-hero__actions {
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .inkling-hero__art {
+    order: 2;
+    position: relative;
+    inset: auto;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: min(82vw, 640px);
+    margin-top: 4px;
+    background-image: var(--hero-image-mobile, var(--hero-image-desktop));
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center top;
   }
 }
 
 /* Mobile */
 @media screen and (max-width: 749px) {
   .inkling-hero__inner {
-    grid-template-columns: 1fr;
-    min-height: auto;
+    padding: 32px 20px 18px;
   }
 
   .inkling-hero__content {
-    order: 1;
     max-width: none;
-    padding: 28px 20px 24px;
   }
 
   .inkling-hero__heading {
-    font-size: clamp(3rem, 13vw, 4.4rem);
-    line-height: 0.92;
+    font-size: clamp(3.15rem, 14vw, 4.8rem);
+    line-height: 0.9;
   }
 
   .inkling-hero__text {
-    max-width: 290px;
+    max-width: 320px;
     margin-top: 18px;
     font-size: 1rem;
   }
@@ -263,21 +305,24 @@
     font-size: 0.9rem;
   }
 
-  .inkling-hero__media {
-    order: 2;
-    height: auto;
-    min-height: 0;
+  .inkling-hero__art {
+    height: min(112vw, 620px);
+    margin-top: 0;
+  }
+}
+
+/* Small mobile */
+@media screen and (max-width: 420px) {
+  .inkling-hero__inner {
+    padding: 28px 18px 16px;
   }
 
-  .inkling-hero__media picture {
-    height: auto;
+  .inkling-hero__heading {
+    font-size: clamp(2.95rem, 14.8vw, 4.1rem);
   }
 
-  .inkling-hero__image {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    object-position: center top;
+  .inkling-hero__art {
+    height: min(122vw, 560px);
   }
 }
 
