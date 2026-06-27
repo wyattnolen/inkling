@@ -1,0 +1,230 @@
+{{ 'section-artist-spotlight.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign artist = section.settings.artist
+
+  if artist == blank and product != blank
+    assign artist = product.metafields.custom.artist.value
+  endif
+
+  assign display_name = artist.display_name.value
+  assign bio = artist.bio.value
+  assign quote = artist.featured_quote.value
+
+  assign profile_image = artist.profile_image.value
+  assign spotlight_profile_image = artist.spotlight_profile_image.value
+  assign spotlight_background_image = artist.spotlight_background_image.value
+
+  assign artist_collection = artist.collection.value
+
+  if display_name == blank
+    assign display_name = section.settings.fallback_name
+  endif
+
+  if bio == blank
+    assign bio = section.settings.fallback_bio
+  endif
+
+  if spotlight_profile_image == blank
+    assign spotlight_profile_image = profile_image
+  endif
+
+  if spotlight_background_image == blank
+    assign spotlight_background_image = section.settings.fallback_background_image
+  endif
+
+  if spotlight_profile_image == blank
+    assign spotlight_profile_image = section.settings.fallback_spotlight_profile_image
+  endif
+
+  if artist_collection != blank
+    assign cta_url = artist_collection.url
+  else
+    assign cta_url = section.settings.button_link
+  endif
+%}
+
+{% if artist != blank or section.settings.show_fallback %}
+  <section
+    id="ArtistSpotlight-{{ section.id }}"
+    class="artist-spotlight"
+    style="
+      --artist-spotlight-bg-color: {{ section.settings.background_color }};
+      --artist-spotlight-text-color: {{ section.settings.text_color }};
+      --artist-spotlight-accent-color: {{ section.settings.accent_color }};
+      --artist-spotlight-min-height: {{ section.settings.section_min_height }}px;
+    "
+  >
+    {% if spotlight_background_image != blank %}
+      <div class="artist-spotlight__background-wrap" aria-hidden="true">
+        {{
+          spotlight_background_image
+          | image_url: width: 2400
+          | image_tag:
+            loading: 'lazy',
+            widths: '750, 1100, 1500, 2000, 2400',
+            sizes: '100vw',
+            class: 'artist-spotlight__background',
+            alt: ''
+        }}
+      </div>
+    {% endif %}
+
+    <div class="artist-spotlight__inner">
+      <div class="artist-spotlight__media">
+        {% if spotlight_profile_image != blank %}
+          {{
+            spotlight_profile_image
+            | image_url: width: 900
+            | image_tag:
+              loading: 'lazy',
+              widths: '320, 480, 640, 800, 900',
+              sizes: '(min-width: 990px) 44vw, 92vw',
+              class: 'artist-spotlight__image',
+              alt: display_name
+          }}
+        {% else %}
+          <div class="artist-spotlight__image artist-spotlight__image--placeholder">
+            {{ 'image' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="artist-spotlight__content">
+        {% if section.settings.kicker != blank %}
+          <p class="artist-spotlight__kicker">
+            {{ section.settings.kicker }}
+          </p>
+        {% endif %}
+
+        <h2 class="artist-spotlight__heading">
+          {{ section.settings.heading_prefix | strip }} {{ display_name }}
+        </h2>
+
+        {% if bio != blank %}
+          <div class="artist-spotlight__bio">
+            {{ bio }}
+          </div>
+        {% endif %}
+
+        {% if quote != blank and section.settings.show_quote %}
+          <blockquote class="artist-spotlight__quote">
+            “{{ quote }}”
+          </blockquote>
+        {% endif %}
+
+        {% if cta_url != blank and section.settings.button_label != blank %}
+          <a href="{{ cta_url }}" class="artist-spotlight__button">
+            {{ section.settings.button_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Artist spotlight",
+  "tag": "section",
+  "class": "section section-artist-spotlight",
+  "settings": [
+    {
+      "type": "metaobject",
+      "id": "artist",
+      "label": "Artist",
+      "metaobject_type": "artist"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_fallback",
+      "label": "Show fallback content when no artist is selected",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_background_image",
+      "label": "Fallback spotlight background image"
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_spotlight_profile_image",
+      "label": "Fallback spotlight profile image"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Artist Spotlight"
+    },
+    {
+      "type": "text",
+      "id": "heading_prefix",
+      "label": "Heading prefix",
+      "default": "Meet "
+    },
+    {
+      "type": "text",
+      "id": "fallback_name",
+      "label": "Fallback artist name",
+      "default": "Kasey Nolen"
+    },
+    {
+      "type": "textarea",
+      "id": "fallback_bio",
+      "label": "Fallback bio",
+      "default": "Kasey’s playful lines and bold little details bring a little joy to everything she creates."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quote",
+      "label": "Show featured quote",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Explore this artist's collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Fallback button link"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Fallback background color",
+      "default": "#ffe6f2"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#ff3f9e"
+    },
+    {
+      "type": "range",
+      "id": "section_min_height",
+      "label": "Minimum section height",
+      "min": 280,
+      "max": 620,
+      "step": 20,
+      "unit": "px",
+      "default": 420
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inkling Artist spotlight"
+    }
+  ]
+}
+{% endschema %}

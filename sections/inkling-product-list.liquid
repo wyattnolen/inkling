@@ -1,0 +1,445 @@
+{% liquid
+  assign featured_collection = section.settings.collection
+  assign max_items = section.settings.max_products
+%}
+
+<section
+  id="InklingFeaturedDesigns-{{ section.id }}"
+  class="inkling-featured-designs"
+  style="
+    --featured-bg: {{ section.settings.background_color }};
+    --featured-max-width: {{ section.settings.max_width }}px;
+    --featured-padding-top: {{ section.settings.padding_top }}px;
+    --featured-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="inkling-featured-designs__inner">
+    <div class="inkling-featured-designs__header">
+      {% if section.settings.heading != blank %}
+        <h2 class="inkling-featured-designs__heading">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.show_view_all and featured_collection != blank %}
+        <a class="inkling-featured-designs__view-all" href="{{ featured_collection.url }}">
+          {{ section.settings.view_all_label }}
+          <span aria-hidden="true">→</span>
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="inkling-featured-designs__grid">
+      {% if featured_collection != blank and featured_collection.products_count > 0 %}
+        {% for product in featured_collection.products limit: max_items %}
+          {% assign product_form_id = 'featured-product-form-' | append: section.id | append: '-' | append: product.id %}
+          {% assign first_available_variant = product.selected_or_first_available_variant %}
+
+          <article class="inkling-featured-card">
+            <a class="inkling-featured-card__media" href="{{ product.url }}">
+              {% if product.featured_image != blank %}
+                {{
+                  product.featured_image
+                  | image_url: width: 600
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'inkling-featured-card__image',
+                    widths: '240, 320, 420, 600',
+                    sizes: '(max-width: 749px) 42vw, 180px',
+                    alt: product.featured_image.alt | default: product.title
+                }}
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'inkling-featured-card__placeholder' }}
+              {% endif %}
+            </a>
+
+            <div class="inkling-featured-card__body">
+              <h3 class="inkling-featured-card__title">
+                <a href="{{ product.url }}">{{ product.title }}</a>
+              </h3>
+
+              {% if product.metafields.custom.artist_name != blank %}
+                <p class="inkling-featured-card__artist">
+                  by {{ product.metafields.custom.artist_name }}
+                </p>
+              {% elsif product.vendor != blank %}
+                <p class="inkling-featured-card__artist">
+                  by {{ product.vendor }}
+                </p>
+              {% endif %}
+
+              <div class="inkling-featured-card__price">
+                {{ product.price | money_without_trailing_zeros }}
+              </div>
+
+              {% form 'product', product, id: product_form_id, class: 'inkling-featured-card__form' %}
+                <input type="hidden" name="id" value="{{ first_available_variant.id }}">
+
+                <button
+                  type="submit"
+                  class="inkling-featured-card__button"
+                  {% unless first_available_variant.available %}disabled{% endunless %}
+                >
+                  {% if first_available_variant.available %}
+                    {{ section.settings.button_label }}
+                  {% else %}
+                    Sold out
+                  {% endif %}
+                </button>
+              {% endform %}
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..max_items) %}
+          <article class="inkling-featured-card">
+            <div class="inkling-featured-card__media">
+              {{ 'product-1' | placeholder_svg_tag: 'inkling-featured-card__placeholder' }}
+            </div>
+
+            <div class="inkling-featured-card__body">
+              <h3 class="inkling-featured-card__title">Product name</h3>
+              <p class="inkling-featured-card__artist">by Artist Name</p>
+              <div class="inkling-featured-card__price">$12</div>
+              <button type="button" class="inkling-featured-card__button">Add to cart</button>
+            </div>
+          </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+#InklingFeaturedDesigns-{{ section.id }} {
+  background: var(--featured-bg, #fffdf8);
+  padding-block: var(--featured-padding-top) var(--featured-padding-bottom);
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__inner {
+  width: min(100% - 40px, var(--featured-max-width));
+  margin-inline: auto;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__heading {
+  margin: 0;
+  color: #050505;
+  font-size: clamp(1.2rem, 1.45vw, 1.55rem);
+  line-height: .95;
+  font-weight: 950;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #050505;
+  font-size: .72rem;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__view-all span {
+  font-size: 1.5em;
+  line-height: .7;
+  transition: transform .18s ease;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__view-all:hover span {
+  transform: translateX(4px);
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__grid {
+  display: grid;
+  grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0, 1fr));
+  gap: 24px 28px;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card {
+  min-width: 0;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / 1.25;
+  background:
+    radial-gradient(circle at 35% 18%, rgba(255, 255, 255, .9), transparent 34%),
+    #f8f4ed;
+  border-radius: 7px;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__image {
+  width: 70%;
+  
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, .08));
+  transition: transform .2s ease;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card:hover .inkling-featured-card__image {
+  transform: rotate(-1deg) translateY(-2px);
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__placeholder {
+  width: 68%;
+  height: 68%;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__body {
+  padding-top: 9px;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__title {
+  margin: 0;
+  color: #050505;
+  font-size: .76rem;
+  line-height: 1.05;
+  font-weight: 950;
+  letter-spacing: -0.025em;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__title a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__artist {
+  margin: 2px 0 0;
+  color: #111;
+  font-size: .66rem;
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__price {
+  margin-top: 8px;
+  color: #050505;
+  font-size: .72rem;
+  line-height: 1;
+  font-weight: 950;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__form {
+  margin-top: 10px;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__button {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 25px;
+  min-width: 96px;
+  padding: 6px 13px 5px;
+  border: 1.75px solid #050505;
+  border-radius: 6px;
+  background: #fff;
+  color: #050505;
+  font: inherit;
+  font-size: .56rem;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 1px 0 #050505;
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    background-color .16s ease;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__button:hover:not(:disabled) {
+  background: #ff7ab8;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 #050505;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 #050505;
+}
+
+#InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+@media screen and (max-width: 989px) {
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px 20px;
+  }
+
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__title {
+    font-size: .78rem;
+  }
+
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__artist,
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__price {
+    font-size: .68rem;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__inner {
+    width: min(100% - 28px, var(--featured-max-width));
+  }
+
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__header {
+    align-items: flex-end;
+    margin-bottom: 14px;
+  }
+
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-designs__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+  }
+
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__media {
+    aspect-ratio: 1 / 1.02;
+  }
+
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__image {
+    width: 78%;
+    height: 86%;
+  }
+
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__title {
+    font-size: .82rem;
+  }
+
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__artist,
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__price {
+    font-size: .72rem;
+  }
+
+  #InklingFeaturedDesigns-{{ section.id }} .inkling-featured-card__button {
+    width: 100%;
+    min-width: 0;
+    min-height: 31px;
+    font-size: .6rem;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Inkling featured designs",
+  "tag": "section",
+  "class": "section-inkling-featured-designs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured designs"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Product count",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show view all link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all label",
+      "default": "View all"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Add to cart label",
+      "default": "Add to cart"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#fffdf8"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 960,
+      "max": 1500,
+      "step": 20,
+      "unit": "px",
+      "default": 1240
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inkling featured designs"
+    }
+  ]
+}
+{% endschema %}

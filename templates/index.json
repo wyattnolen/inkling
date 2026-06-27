@@ -40,7 +40,7 @@
             "link": "",
             "image": "shopify://shop_images/vibe-flower.png",
             "fallback_icon": "🌸",
-            "background_color": "#F6A3C6",
+            "background_color": "#f6a3c6",
             "text_color": "#111111"
           }
         },
@@ -88,7 +88,7 @@
             "link": "",
             "image": "shopify://shop_images/vibe-tiger.png",
             "fallback_icon": "🐯",
-            "background_color": "#1C51CC",
+            "background_color": "#1c51cc",
             "text_color": "#ffffff"
           }
         }
@@ -105,209 +105,47 @@
         "heading": "Shop by vibe"
       }
     },
-    "product_list_CPTpNa": {
-      "type": "product-list",
-      "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
-          "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "background_color": "",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_g9mgtJ": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_47qtNb": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "link",
-                "custom_button_background": "{{ settings.color_palette.foreground }}",
-                "custom_button_text": "{{ settings.color_palette.background }}",
-                "custom_button_border": "{{ settings.color_palette.background }}",
-                "link_text_color": "",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_g9mgtJ",
-            "product_list_button_47qtNb"
-          ]
-        },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
-          "settings": {
-            "product_card_gap": 4,
-            "background_color": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_color": "",
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_FfTkVT": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_color": "",
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_MgcT4W": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "text_color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_Vbitct": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "text_color": "",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_FfTkVT",
-            "product_title_MgcT4W",
-            "price_Vbitct"
-          ]
-        }
-      },
-      "name": "Featured collection",
+    "inkling_product_list_3UkG8Q": {
+      "type": "inkling-product-list",
+      "name": "Inkling featured designs",
       "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
+        "heading": "Featured designs",
+        "collection": "frontpage",
         "max_products": 6,
-        "columns": 6,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "columns_desktop": 6,
+        "show_view_all": true,
+        "view_all_label": "View all",
+        "button_label": "Add to cart",
+        "background_color": "#fffdf8",
+        "max_width": 1240,
+        "padding_top": 28,
+        "padding_bottom": 36
+      }
+    },
+    "inkling_artist_spotlight_KPEeaP": {
+      "type": "inkling-artist-spotlight",
+      "name": "Inkling Artist spotlight",
+      "settings": {
+        "artist": "kasey-nolen",
+        "show_fallback": true,
+        "kicker": "Artist Spotlight",
+        "heading_prefix": "Meet",
+        "fallback_name": "Kasey",
+        "fallback_bio": "Kasey’s playful lines and bold little details bring a little joy to everything she creates.",
+        "show_quote": false,
+        "button_label": "Explore this artist's collection",
+        "button_link": "",
+        "background_color": "#ffe6f2",
+        "text_color": "#111111",
+        "accent_color": "#ff3f9e",
+        "section_min_height": 420
       }
     }
   },
   "order": [
     "inkling_hero_RV8NB4",
     "vibe_card_4FcBb3",
-    "product_list_CPTpNa"
+    "inkling_product_list_3UkG8Q",
+    "inkling_artist_spotlight_KPEeaP"
   ]
 }

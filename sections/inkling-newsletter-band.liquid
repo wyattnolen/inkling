@@ -1,0 +1,568 @@
+<section
+  id="InklingNewsletterBand-{{ section.id }}"
+  class="inkling-newsletter-band"
+  style="
+    --band-bg: {{ section.settings.background_color }};
+    --wave-bg: {{ section.settings.wave_color }};
+    --text-color: {{ section.settings.text_color }};
+    --button-bg: {{ section.settings.button_bg }};
+    --button-text: {{ section.settings.button_text }};
+  "
+>
+  <div class="inkling-newsletter-band__inner">
+    <div class="inkling-newsletter-band__dots" aria-hidden="true">
+      <span class="dot dot--yellow"></span>
+      <span class="dot dot--blue"></span>
+      <span class="dot dot--green"></span>
+      <span class="dot dot--blue-2"></span>
+      <span class="dot dot--pink"></span>
+    </div>
+
+    <div class="inkling-newsletter-band__features">
+      {% for block in section.blocks %}
+        {% if block.type == 'feature' %}
+          <div class="inkling-newsletter-band__feature" {{ block.shopify_attributes }}>
+            {% if block.settings.icon != blank %}
+              <div class="inkling-newsletter-band__icon">
+                {{
+                  block.settings.icon
+                  | image_url: width: 180
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '70, 90, 120, 180',
+                    alt: block.settings.heading
+                }}
+              </div>
+            {% endif %}
+
+            <div class="inkling-newsletter-band__feature-copy">
+              {% if block.settings.heading != blank %}
+                <h3>{{ block.settings.heading }}</h3>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <div class="inkling-newsletter-band__feature-text">
+                  {{ block.settings.text }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="inkling-newsletter-band__wave">
+      <svg
+        class="inkling-newsletter-band__wave-svg"
+        viewBox="0 0 1440 90"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path
+          d="M0 45 C90 0 180 0 270 45 C360 90 450 90 540 45 C630 0 720 0 810 45 C900 90 990 90 1080 45 C1170 0 1260 0 1350 45 C1395 67 1420 67 1440 45 L1440 0 L0 0 Z"
+          fill="currentColor"
+        />
+      </svg>
+
+      <div class="inkling-newsletter-band__signup">
+        <div class="inkling-newsletter-band__headline-wrap">
+          <img
+            class="inkling-newsletter-band__headline-image"
+            src="{{ 'bethefirsttogetinked.png' | asset_url }}"
+            alt="Be the first to get inked."
+            loading="lazy"
+            width="1389"
+            height="429"
+          >
+        </div>
+
+        <div class="inkling-newsletter-band__form-wrap">
+          {% if section.settings.subheading != blank %}
+            <div class="inkling-newsletter-band__subheading">
+              {{ section.settings.subheading }}
+            </div>
+          {% endif %}
+
+          {% form 'customer', class: 'inkling-newsletter-band__form' %}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+
+            <div class="inkling-newsletter-band__field-row">
+              <label class="visually-hidden" for="InklingNewsletterEmail-{{ section.id }}">
+                Email address
+              </label>
+
+              <input
+                id="InklingNewsletterEmail-{{ section.id }}"
+                type="email"
+                name="contact[email]"
+                class="inkling-newsletter-band__input"
+                value="{{ form.email }}"
+                aria-required="true"
+                autocorrect="off"
+                autocapitalize="off"
+                autocomplete="email"
+                placeholder="{{ section.settings.placeholder }}"
+                required
+              >
+
+              <button type="submit" class="inkling-newsletter-band__button">
+                {{ section.settings.button_label }}
+              </button>
+            </div>
+
+            {% if form.errors %}
+              <div class="inkling-newsletter-band__message inkling-newsletter-band__message--error">
+                {{ form.errors | default_errors }}
+              </div>
+            {% endif %}
+
+            {% if form.posted_successfully? %}
+              <p class="inkling-newsletter-band__message inkling-newsletter-band__message--success">
+                {{ section.settings.success_message }}
+              </p>
+            {% endif %}
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .inkling-newsletter-band {
+    position: relative;
+    overflow: hidden;
+    background: var(--band-bg, #fffaf1);
+    color: var(--text-color, #111);
+  }
+
+  .inkling-newsletter-band__inner {
+    position: relative;
+  }
+
+  .inkling-newsletter-band__features {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 28px clamp(1.25rem, 4vw, 3rem) 54px;
+  }
+
+  .inkling-newsletter-band__feature {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    padding: 0 clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .inkling-newsletter-band__feature + .inkling-newsletter-band__feature {
+    border-left: 1px solid rgba(17, 17, 17, 0.12);
+  }
+
+  .inkling-newsletter-band__icon {
+    width: clamp(58px, 6vw, 86px);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .inkling-newsletter-band__icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  .inkling-newsletter-band__feature-copy h3 {
+    margin: 0 0 0.3rem;
+    font-size: clamp(1rem, 1.4vw, 1.35rem);
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--text-color, #111);
+  }
+
+  .inkling-newsletter-band__feature-text {
+    max-width: 17ch;
+    font-size: clamp(0.75rem, 0.9vw, 0.9rem);
+    line-height: 1.25;
+    font-weight: 600;
+    color: rgba(17, 17, 17, 0.72);
+  }
+
+  .inkling-newsletter-band__feature-text p {
+    margin: 0;
+  }
+
+  .inkling-newsletter-band__wave {
+    position: relative;
+    z-index: 1;
+    margin-top: 0;
+    background: var(--wave-bg, #005cff);
+    color: var(--band-bg, #fffaf1);
+    overflow: hidden;
+
+    -webkit-mask: none;
+    mask: none;
+  }
+
+  .inkling-newsletter-band__wave-svg {
+    position: absolute;
+    left: 0;
+    top: -1px;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 86px;
+    pointer-events: none;
+  }
+
+  .inkling-newsletter-band__signup {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(280px, 0.85fr) minmax(360px, 1fr);
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 120px clamp(1.25rem, 4vw, 3rem) 48px;
+  }
+
+  .inkling-newsletter-band__headline-wrap {
+    width: 100%;
+  }
+
+  .inkling-newsletter-band__headline-image {
+    display: block;
+    width: min(100%, 430px);
+    height: auto;
+  }
+
+  .inkling-newsletter-band__form-wrap {
+    padding-top: 0.2rem;
+  }
+
+  .inkling-newsletter-band__subheading {
+    margin: 0 0 1rem;
+    max-width: 25rem;
+    color: #fff;
+    font-size: clamp(1.1rem, 2vw, 1.65rem);
+    line-height: 1.12;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+
+  .inkling-newsletter-band__subheading p {
+    margin: 0;
+  }
+
+  .inkling-newsletter-band__subheading strong {
+    color: #ffdd2e;
+    font-weight: 950;
+  }
+
+  .inkling-newsletter-band__form {
+    width: 100%;
+  }
+
+  .inkling-newsletter-band__field-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .inkling-newsletter-band__input {
+    width: 100%;
+    min-height: 56px;
+    border: 0;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    background: #fff;
+    color: #111;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .inkling-newsletter-band__input::placeholder {
+    color: rgba(17, 17, 17, 0.38);
+  }
+
+  .inkling-newsletter-band__button {
+    min-height: 56px;
+    border: 0;
+    border-radius: 8px;
+    padding: 0.75rem 1.55rem;
+    background: var(--button-bg, #ff80b5);
+    color: var(--button-text, #fff);
+    font-size: 0.85rem;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease,
+      filter 160ms ease;
+  }
+
+  .inkling-newsletter-band__button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.04);
+    box-shadow: 0 5px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .inkling-newsletter-band__button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .inkling-newsletter-band__message {
+    margin: 0.75rem 0 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  .inkling-newsletter-band__message--error,
+  .inkling-newsletter-band__message--success {
+    color: #fff;
+  }
+
+  .inkling-newsletter-band__dots {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .inkling-newsletter-band__dots .dot {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+  }
+
+  .dot--yellow {
+    top: 12%;
+    left: 6%;
+    background: #ffd42a;
+  }
+
+  .dot--blue {
+    top: 32%;
+    left: 10%;
+    background: #1a64ff;
+  }
+
+  .dot--green {
+    top: 12%;
+    right: 14.5%;
+    background: #72d7ac;
+  }
+
+  .dot--blue-2 {
+    top: 30%;
+    right: 8%;
+    background: #1a64ff;
+  }
+
+  .dot--pink {
+    top: 43%;
+    right: 8.5%;
+    background: #ff80b5;
+  }
+
+  @media screen and (max-width: 900px) {
+    .inkling-newsletter-band__features {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      padding: 28px 1.25rem 48px;
+    }
+
+    .inkling-newsletter-band__feature {
+      padding: 0;
+      max-width: 420px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .inkling-newsletter-band__feature + .inkling-newsletter-band__feature {
+      border-left: 0;
+      border-top: 1px solid rgba(17, 17, 17, 0.12);
+      padding-top: 1.25rem;
+    }
+
+    .inkling-newsletter-band__feature-text {
+      max-width: none;
+    }
+
+    .inkling-newsletter-band__signup {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      text-align: center;
+      padding-top: 88px;
+      padding-bottom: 42px;
+    }
+
+    .inkling-newsletter-band__headline-image {
+      width: min(100%, 400px);
+      margin-inline: auto;
+    }
+
+    .inkling-newsletter-band__subheading {
+      margin-inline: auto;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .inkling-newsletter-band__dots {
+      display: none;
+    }
+
+    .inkling-newsletter-band__wave-svg {
+      height: 58px;
+    }
+
+    .inkling-newsletter-band__signup {
+      padding-top: 66px;
+      padding-inline: 1.25rem;
+    }
+
+    .inkling-newsletter-band__field-row {
+      grid-template-columns: 1fr;
+    }
+
+    .inkling-newsletter-band__button {
+      width: 100%;
+    }
+
+    .inkling-newsletter-band__headline-image {
+      width: min(100%, 330px);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Inkling newsletter band",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Top background",
+      "default": "#fffaf1"
+    },
+    {
+      "type": "color",
+      "id": "wave_color",
+      "label": "Newsletter background",
+      "default": "#005cff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Feature text color",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button background",
+      "default": "#ff80b5"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Signup text",
+      "default": "<p>Join our <strong>list</strong> and enjoy <strong>15% OFF</strong> your first order.</p>"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Sign me up"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks for signing up!"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Designed by real artists"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Every design is original and artist-created.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inkling newsletter band",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "heading": "Designed by real artists",
+            "text": "<p>Every design is original and artist-created.</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "heading": "Easy to apply, easy to love",
+            "text": "<p>Takes 30 seconds. Lasts 2–5 days.</p>"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "heading": "Skin-safe & worry-free",
+            "text": "<p>Vegan ink. Dermatologist tested. Made for you.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

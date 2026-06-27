@@ -1,0 +1,822 @@
+{% comment %}
+  sections/inkling-header.liquid
+{% endcomment %}
+
+<header
+  id="InklingHeader-{{ section.id }}"
+  class="inkling-header{% if section.settings.sticky_header %} inkling-header--sticky{% endif %}"
+  style="
+    --header-bg: {{ section.settings.header_bg }};
+    --header-text: {{ section.settings.header_text }};
+    --announcement-bg: {{ section.settings.announcement_bg }};
+    --announcement-text: {{ section.settings.announcement_text_color }};
+    --accent-pink: {{ section.settings.accent_pink }};
+    --accent-blue: {{ section.settings.accent_blue }};
+  "
+>
+  {% if section.settings.announcement_text != blank %}
+    <div class="inkling-header__announcement">
+      <div class="inkling-header__announcement-inner page-width">
+        {{ section.settings.announcement_text }}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="inkling-header__main">
+    <div class="inkling-header__inner page-width">
+      <div class="inkling-header__mobile-left">
+        <button
+          type="button"
+          class="inkling-header__menu-button"
+          aria-label="Open menu"
+          aria-controls="InklingMobileMenu-{{ section.id }}"
+          aria-expanded="false"
+          data-mobile-menu-toggle
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <a href="{{ routes.root_url }}" class="inkling-header__logo">
+        {% if section.settings.logo != blank %}
+          {{ section.settings.logo | image_url: width: 360 | image_tag:
+            loading: 'eager',
+            widths: '140, 180, 240, 320, 360',
+            class: 'inkling-header__logo-image',
+            alt: shop.name
+          }}
+        {% else %}
+          <span class="inkling-header__logo-text">
+            INKLING
+            <small>TATTOOS</small>
+          </span>
+        {% endif %}
+      </a>
+
+      <nav class="inkling-header__nav" aria-label="Main navigation">
+        {% for link in section.settings.menu.links %}
+          {% if link.links != blank %}
+            <div class="inkling-header__nav-item inkling-header__nav-item--has-dropdown">
+              <button
+                type="button"
+                class="inkling-header__nav-link"
+                aria-expanded="false"
+                data-dropdown-toggle
+              >
+                {{ link.title }}
+                <svg aria-hidden="true" viewBox="0 0 12 8">
+                  <path d="M1 1.5L6 6.5L11 1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+
+              <div class="inkling-header__dropdown">
+                {% for child_link in link.links %}
+                  <a href="{{ child_link.url }}" class="inkling-header__dropdown-link">
+                    {{ child_link.title }}
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            <a href="{{ link.url }}" class="inkling-header__nav-link">
+              {{ link.title }}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+
+      <div class="inkling-header__actions">
+        {% if section.settings.show_location_cta %}
+          <button
+            type="button"
+            class="inkling-header__location"
+            data-location-trigger
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M12 21s7-6.1 7-12A7 7 0 1 0 5 9c0 5.9 7 12 7 12Z" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+
+            <span class="inkling-header__location-text">
+              {% if section.settings.location_label != blank %}
+                {{ section.settings.location_label }}
+              {% else %}
+                Choose Store
+              {% endif %}
+            </span>
+          </button>
+        {% endif %}
+
+        <a href="{{ routes.search_url }}" class="inkling-header__icon-link" aria-label="Search">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M16.5 16.5L21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </a>
+
+        <a href="{{ routes.account_url }}" class="inkling-header__icon-link" aria-label="Account">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M4.5 21a7.5 7.5 0 0 1 15 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </a>
+
+        <a href="{{ routes.cart_url }}" class="inkling-header__icon-link inkling-header__cart" aria-label="Cart">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M7 8h10l-.75 13H7.75L7 8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M9 8a3 3 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+
+          {% if cart.item_count > 0 %}
+            <span class="inkling-header__cart-count">
+              {{ cart.item_count }}
+            </span>
+          {% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="InklingMobileMenu-{{ section.id }}"
+    class="inkling-header__mobile-menu"
+    hidden
+    data-mobile-menu
+  >
+    <div class="inkling-header__mobile-panel">
+      <div class="inkling-header__mobile-top">
+        <span class="inkling-header__mobile-title">Menu</span>
+
+        <button
+          type="button"
+          class="inkling-header__mobile-close"
+          aria-label="Close menu"
+          data-mobile-menu-close
+        >
+          ×
+        </button>
+      </div>
+
+      {% if section.settings.show_location_cta %}
+        <button
+          type="button"
+          class="inkling-header__mobile-location"
+          data-location-trigger
+        >
+          <strong>
+            {% if section.settings.location_label != blank %}
+              {{ section.settings.location_label }}
+            {% else %}
+              Choose Store
+            {% endif %}
+          </strong>
+          <span>Set your shopping location</span>
+        </button>
+      {% endif %}
+
+      <nav class="inkling-header__mobile-nav" aria-label="Mobile navigation">
+        {% for link in section.settings.menu.links %}
+          {% if link.links != blank %}
+            <details class="inkling-header__mobile-details">
+              <summary>
+                {{ link.title }}
+                <span>+</span>
+              </summary>
+
+              <div class="inkling-header__mobile-subnav">
+                {% for child_link in link.links %}
+                  <a href="{{ child_link.url }}">
+                    {{ child_link.title }}
+                  </a>
+                {% endfor %}
+              </div>
+            </details>
+          {% else %}
+            <a href="{{ link.url }}">
+              {{ link.title }}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script>
+  (() => {
+    const header = document.querySelector('#InklingHeader-{{ section.id }}');
+    if (!header) return;
+
+    const menuToggle = header.querySelector('[data-mobile-menu-toggle]');
+    const menu = header.querySelector('[data-mobile-menu]');
+    const closeButton = header.querySelector('[data-mobile-menu-close]');
+    const dropdownToggles = header.querySelectorAll('[data-dropdown-toggle]');
+
+    const openMenu = () => {
+      if (!menu || !menuToggle) return;
+      menu.hidden = false;
+      menuToggle.setAttribute('aria-expanded', 'true');
+      document.documentElement.classList.add('inkling-menu-open');
+    };
+
+    const closeMenu = () => {
+      if (!menu || !menuToggle) return;
+      menu.hidden = true;
+      menuToggle.setAttribute('aria-expanded', 'false');
+      document.documentElement.classList.remove('inkling-menu-open');
+    };
+
+    menuToggle?.addEventListener('click', openMenu);
+    closeButton?.addEventListener('click', closeMenu);
+
+    menu?.addEventListener('click', (event) => {
+      if (event.target === menu) closeMenu();
+    });
+
+    dropdownToggles.forEach((toggle) => {
+      toggle.addEventListener('click', () => {
+        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+
+        dropdownToggles.forEach((otherToggle) => {
+          otherToggle.setAttribute('aria-expanded', 'false');
+        });
+
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!header.contains(event.target)) {
+        dropdownToggles.forEach((toggle) => {
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+
+        dropdownToggles.forEach((toggle) => {
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+  })();
+</script>
+
+{% stylesheet %}
+.inkling-header {
+  position: relative;
+  z-index: 50;
+  background: var(--header-bg);
+  color: var(--header-text);
+  font-family: inherit;
+}
+
+.inkling-header--sticky {
+  position: sticky;
+  top: 0;
+}
+
+.inkling-header__announcement {
+  background: var(--announcement-bg);
+  color: var(--announcement-text);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.inkling-header__announcement-inner {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.35rem 1rem;
+}
+
+.inkling-header__announcement p {
+  margin: 0;
+}
+
+.inkling-header__main {
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.inkling-header__inner {
+  min-height: 82px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 3rem);
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.inkling-header__logo {
+  display: inline-flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  min-width: max-content;
+}
+
+.inkling-header__logo-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 180px;
+  max-height: 54px;
+}
+
+.inkling-header__logo-text {
+  display: inline-flex;
+  flex-direction: column;
+  font-size: clamp(1.75rem, 3vw, 2.35rem);
+  line-height: 0.82;
+  font-weight: 950;
+  letter-spacing: -0.06em;
+}
+
+.inkling-header__logo-text small {
+  margin-top: 0.35rem;
+  font-size: 0.48em;
+  letter-spacing: 0.42em;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.inkling-header__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.2rem, 2.4vw, 2.6rem);
+}
+
+.inkling-header__nav-item {
+  position: relative;
+}
+
+.inkling-header__nav-link {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: inherit;
+  text-decoration: none;
+  font: inherit;
+  font-size: 0.98rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.75rem 0;
+  white-space: nowrap;
+}
+
+.inkling-header__nav-link svg {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+.inkling-header__nav-link:hover,
+.inkling-header__nav-link:focus-visible {
+  color: var(--accent-blue);
+}
+
+.inkling-header__dropdown {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 0.65rem);
+  transform: translateX(-50%) translateY(0.35rem);
+  min-width: 210px;
+  padding: 0.65rem;
+  border: 2px solid #111;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+}
+
+.inkling-header__nav-item:focus-within .inkling-header__dropdown,
+.inkling-header__nav-item:hover .inkling-header__dropdown,
+.inkling-header__nav-link[aria-expanded='true'] + .inkling-header__dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.inkling-header__dropdown-link {
+  display: block;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.inkling-header__dropdown-link:hover,
+.inkling-header__dropdown-link:focus-visible {
+  background: #f8e5ef;
+}
+
+.inkling-header__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(0.5rem, 1.4vw, 1.25rem);
+  min-width: max-content;
+}
+
+.inkling-header__location {
+  appearance: none;
+  border: 2px solid #111;
+  background: #fff;
+  color: #111;
+  border-radius: 999px;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 0.95rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease;
+}
+
+.inkling-header__location:hover,
+.inkling-header__location:focus-visible {
+  background: #ffe071;
+  box-shadow: 4px 4px 0 #111;
+  transform: translate(-2px, -2px);
+}
+
+.inkling-header__location svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: 0 0 auto;
+}
+
+.inkling-header__icon-link {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 999px;
+}
+
+.inkling-header__icon-link:hover,
+.inkling-header__icon-link:focus-visible {
+  background: #f7f7f7;
+}
+
+.inkling-header__icon-link svg {
+  width: 25px;
+  height: 25px;
+}
+
+.inkling-header__cart-count {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-pink);
+  color: #111;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.inkling-header__mobile-left {
+  display: none;
+}
+
+.inkling-header__menu-button {
+  appearance: none;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.inkling-header__menu-button span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 999px;
+}
+
+.inkling-header__mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.inkling-header__mobile-panel {
+  width: min(88vw, 390px);
+  height: 100%;
+  background: #fff;
+  padding: 1.1rem;
+  overflow-y: auto;
+  box-shadow: 16px 0 40px rgba(0, 0, 0, 0.16);
+}
+
+.inkling-header__mobile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.inkling-header__mobile-title {
+  font-size: 1.3rem;
+  font-weight: 950;
+}
+
+.inkling-header__mobile-close {
+  appearance: none;
+  border: 2px solid #111;
+  background: #fff;
+  border-radius: 999px;
+  width: 42px;
+  height: 42px;
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.inkling-header__mobile-location {
+  appearance: none;
+  border: 2px solid #111;
+  background: #ffe071;
+  width: 100%;
+  border-radius: 18px;
+  padding: 1rem;
+  text-align: left;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.inkling-header__mobile-location strong,
+.inkling-header__mobile-location span {
+  display: block;
+}
+
+.inkling-header__mobile-location strong {
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.inkling-header__mobile-location span {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.inkling-header__mobile-nav {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.inkling-header__mobile-nav > a,
+.inkling-header__mobile-details summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0.8rem 0.2rem;
+  color: inherit;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 900;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+.inkling-header__mobile-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.inkling-header__mobile-subnav {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.4rem 0 0.65rem 1rem;
+}
+
+.inkling-header__mobile-subnav a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.45rem 0;
+}
+
+.inkling-menu-open {
+  overflow: hidden;
+}
+
+@media screen and (max-width: 1180px) {
+  .inkling-header__inner {
+    gap: 1rem;
+  }
+
+  .inkling-header__nav {
+    gap: 1.25rem;
+  }
+
+  .inkling-header__location-text {
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media screen and (max-width: 990px) {
+  .inkling-header__inner {
+    min-height: 72px;
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .inkling-header__mobile-left {
+    display: flex;
+  }
+
+  .inkling-header__nav {
+    display: none;
+  }
+
+  .inkling-header__logo {
+    justify-self: center;
+  }
+
+  .inkling-header__logo-image {
+    max-width: 150px;
+    max-height: 48px;
+  }
+
+  .inkling-header__actions {
+    gap: 0.2rem;
+  }
+
+  .inkling-header__location {
+    display: none;
+  }
+
+  .inkling-header__icon-link[href*="/account"] {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .inkling-header__announcement {
+    font-size: 0.76rem;
+  }
+
+  .inkling-header__announcement-inner {
+    min-height: 30px;
+  }
+
+  .inkling-header__inner {
+    min-height: 66px;
+    padding-inline: 0.85rem;
+  }
+
+  .inkling-header__logo-image {
+    max-width: 132px;
+  }
+
+  .inkling-header__logo-text {
+    font-size: 1.65rem;
+  }
+
+  .inkling-header__icon-link {
+    width: 38px;
+    height: 38px;
+  }
+
+  .inkling-header__icon-link svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .inkling-header__icon-link[aria-label='Search'] {
+    display: none;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Inkling header",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "label": "Enable sticky header",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "<p>⚡ <strong>FREE SHIPPING</strong> on orders $30+ — Made by artists, not machines.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_location_cta",
+      "label": "Show store/location CTA",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "location_label",
+      "label": "Location CTA label",
+      "default": "Choose Store"
+    },
+    {
+      "type": "color",
+      "id": "header_bg",
+      "label": "Header background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "header_text",
+      "label": "Header text",
+      "default": "#050505"
+    },
+    {
+      "type": "color",
+      "id": "announcement_bg",
+      "label": "Announcement background",
+      "default": "#175BEF"
+    },
+    {
+      "type": "color",
+      "id": "announcement_text_color",
+      "label": "Announcement text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_pink",
+      "label": "Accent pink",
+      "default": "#FF7AB8"
+    },
+    {
+      "type": "color",
+      "id": "accent_blue",
+      "label": "Accent blue",
+      "default": "#175BEF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inkling header"
+    }
+  ]
+}
+{% endschema %}
