@@ -99,12 +99,14 @@
               <circle cx="12" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/>
             </svg>
 
-            <span class="inkling-header__location-text">
-              {% if section.settings.location_label != blank %}
+            <span class="inkling-header__location-text" data-location-label>
+            {% if cart.attributes.selected_store_name != blank %}
+                {{ cart.attributes.selected_store_name }}
+            {% elsif section.settings.location_label != blank %}
                 {{ section.settings.location_label }}
-              {% else %}
+            {% else %}
                 Choose Store
-              {% endif %}
+            {% endif %}
             </span>
           </button>
         {% endif %}
