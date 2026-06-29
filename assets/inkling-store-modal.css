@@ -1,0 +1,117 @@
+.inkling-store-modal[hidden] {
+    display: none;
+}
+
+.inkling-store-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+}
+
+.inkling-store-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.42);
+}
+
+.inkling-store-modal__dialog {
+    position: relative;
+    width: min(92vw, 720px);
+    max-height: min(760px, 88vh);
+    overflow: auto;
+    margin: 6vh auto;
+    background: #fff;
+    border: 2px solid #111;
+    border-radius: 28px;
+    box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.22);
+    padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.inkling-store-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 42px;
+    height: 42px;
+    border: 2px solid #111;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.inkling-store-modal__header {
+    padding-right: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.inkling-store-modal__eyebrow {
+    margin: 0 0 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.inkling-store-modal__header h2 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 0.95;
+}
+
+.inkling-store-modal__header p:last-child {
+    margin-bottom: 0;
+}
+
+.inkling-store-modal__search {
+    margin-bottom: 1.25rem;
+}
+
+.inkling-store-modal__search label {
+    display: block;
+    margin-bottom: 0.45rem;
+    font-weight: 900;
+}
+
+.inkling-store-modal__search input {
+    width: 100%;
+    min-height: 52px;
+    border: 2px solid #111;
+    border-radius: 999px;
+    padding: 0 1.1rem;
+    font: inherit;
+}
+
+.inkling-store-modal__results {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.inkling-store-card {
+    display: grid;
+    gap: 0.35rem;
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #111;
+    border-radius: 20px;
+    background: #fff;
+    text-align: left;
+    cursor: pointer;
+}
+
+.inkling-store-card:hover,
+.inkling-store-card:focus-visible {
+    background: #ffe071;
+    box-shadow: 5px 5px 0 #111;
+    transform: translate(-2px, -2px);
+}
+
+.inkling-store-card strong {
+    font-size: 1.05rem;
+    font-weight: 950;
+}
+
+.inkling-store-card span {
+    font-size: 0.92rem;
+}

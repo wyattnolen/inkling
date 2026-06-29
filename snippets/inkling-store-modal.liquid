@@ -1,0 +1,38 @@
+{{ 'inkling-store-modal.css' | asset_url | stylesheet_tag }}
+<div class="inkling-store-modal" data-store-modal hidden>
+  <div class="inkling-store-modal__backdrop" data-store-modal-close></div>
+
+  <div
+    class="inkling-store-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="InklingStoreModalTitle"
+  >
+    <button
+      type="button"
+      class="inkling-store-modal__close"
+      aria-label="Close store selector"
+      data-store-modal-close
+    >
+      ×
+    </button>
+
+    <div class="inkling-store-modal__header">
+      <p class="inkling-store-modal__eyebrow">Pick your studio</p>
+      <h2 id="InklingStoreModalTitle">Choose a store</h2>
+      <p>Select the location you’d like to shop with.</p>
+    </div>
+
+    <div class="inkling-store-modal__search">
+      <label for="InklingStoreSearch">Search by city or ZIP</label>
+      <input
+        id="InklingStoreSearch"
+        type="search"
+        placeholder="Try Austin or 90046"
+        data-store-search
+      >
+    </div>
+
+    <div class="inkling-store-modal__results" data-store-results></div>
+  </div>
+</div>
